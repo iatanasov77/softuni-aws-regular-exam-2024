@@ -1,0 +1,9 @@
+{
+  "ami:account=545009856540:filters.image-type.0=machine:filters.name.0=*LAMP Stack - CentOS 8*:filters.state.0=available:owners.0=679593333241:region=eu-central-1": "ami-000dafcbf6d44c260",
+  "ami:account=545009856540:filters.image-type.0=machine:filters.name.0=*LAMP Stack - CentOS 8*:filters.state.0=available:region=eu-central-1": "ami-000dafcbf6d44c260",
+  "availability-zones:account=545009856540:region=eu-central-1": [
+    "eu-central-1a",
+    "eu-central-1b",
+    "eu-central-1c"
+  ]
+}
