@@ -1,7 +1,16 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
-import { CfnKeyPair, IInstance } from 'aws-cdk-lib/aws-ec2';
+import {
+    CfnKeyPair,
+    IInstance,
+    InstanceType,
+    InstanceClass,
+    InstanceSize,
+    AmazonLinuxImage,
+    AmazonLinuxGeneration
+} from 'aws-cdk-lib/aws-ec2';
+
 import { S3EventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Bucket, EventType } from 'aws-cdk-lib/aws-s3';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
@@ -48,12 +57,20 @@ export class RegularExamStack extends cdk.Stack
         this.cfnKeyPair = keyPair.cfnKeyPair;
         
         // Create Web Server EC2 instance
-        this.webServer = machine.createWebServerInstance( this, {
+        this.webServer = machine.createStandaloneWebServerInstance( this, {
             namePrefix: 'My',
+            
+            instanceType: InstanceType.of( InstanceClass.T2, InstanceSize.MICRO ),
+            machineImage: new AmazonLinuxImage({
+                generation: AmazonLinuxGeneration.AMAZON_LINUX_2023,
+            }),
+            
             keyPair: keyPair.keyPair,
             cidr: '10.0.0.0/21',
+            
             uploadBucket: uploadBucket.bucketName,
-            elements: application.initSamplePhpApplication( this, {
+            
+            initElements: application.initSamplePhpApplication( this, {
                 sourcePath: './src/web',
                 applicationRoot: '/usr/share/nginx/html',
                 files: [
